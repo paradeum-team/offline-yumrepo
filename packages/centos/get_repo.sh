@@ -16,9 +16,9 @@ if [ -z "$ADDR" ] || [ -z "$ITEM" ] ;then
 	exit 1
 fi
 
-cat > /etc/yum.repos.d/offline-okd.$ITEM.repo << EOF
-[offline-okd${ITEM}_repo]
-name=Offline Okd CentOS Repo
+cat > /etc/yum.repos.d/offline-k8s.$ITEM.repo << EOF
+[offline-k8s${ITEM}_repo]
+name=Offline K8s CentOS Repo
 baseurl=http://$ADDR/packages/centos/$ITEM/x86_64
 gpgcheck=0
 EOF

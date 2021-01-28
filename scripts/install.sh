@@ -16,8 +16,8 @@ CONFIGSERVER_PORT=$2
 
 
 
-CONFIGSERVER_IP=${CONFIGSERVER_IP:-192.168.1.216}
-CONFIGSERVER_PORT=${CONFIGSERVER_PORT:-8081}
+CONFIGSERVER_IP=${CONFIGSERVER_IP:-47.92.195.72}
+CONFIGSERVER_PORT=${CONFIGSERVER_PORT:-8001}
 
 # 当同步脚本时以下命令根据config.cfg文件进行替换
 IS_SYSTEM_UPGRATE=false
@@ -25,7 +25,7 @@ SWAP_SWITCH=false
 SELINUX_SWITCH=true
 CHRONYD_INSTALL=yes
 OUTLINE_DNS=false
-OKD_IMAGE_VERSION=v3.11.0
+K8S_IMAGE_VERSION=v1.20.2
 
 check_var(){
 	echo "------------------- check yum repo and check raw device -------------------"
@@ -195,8 +195,8 @@ networkManagerEnable(){
 # pre pull images
 preImage(){
 	echo "##### pre pull images start #####"
-	docker pull offlineregistry.dataman-inc.com:5000/openshift/origin-node:${OKD_IMAGE_VERSION}
-	docker pull offlineregistry.dataman-inc.com:5000/openshift/origin-pod:${OKD_IMAGE_VERSION}
+	docker pull offlineregistry.dataman-inc.com:5000/openshift/origin-node:${K8S_IMAGE_VERSION}
+	docker pull offlineregistry.dataman-inc.com:5000/openshift/origin-pod:${K8S_IMAGE_VERSION}
 	echo "##### pre pull images end #####"
 }
 

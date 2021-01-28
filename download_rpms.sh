@@ -5,15 +5,22 @@ cd $base_dir
 
 base(){
 	yum remove -y libseccomp
-	yum --downloadonly --downloaddir=./base install epel-relaese
-	yum install -y base/epel-release
+	yum remove -y epel-release*
+	yum --downloadonly --downloaddir=./base install epel-release
+	yum install -y base/epel-release*
 	sed -i -e "s/^enabled=1/enabled=0/g" /etc/yum.repos.d/epel.repo
+
+	yum remove -y yum-utils* device-mapper-persistent-data* lvm2*
+	yum --downloadonly --downloaddir=./base install yum-utils device-mapper-persistent-data lvm2
+	yum install -y base/yum-utils* base/device-mapper-persistent-data* base/lvm2*
 	rm -rf base
-	yum --downloadonly --downloaddir=./base install  wget git net-tools bind-utils yum-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct glusterfs-fuse httpd-tools telnet curl lrzsz perf strace vim iotop  createrepo tcpdump iftop nginx nc sysstat haproxy chrony kernel-devel dnsmasq python-docker skopeo bind cockpit-bridge cockpit-docker cockpit-system cockpit-ws flannel iscsi-initiator-utils nfs-utils ntp pyparted python-httplib2 socat conntrack-tools cifs-utils device-mapper-multipath atomic docker docker-novolume-plugin etcd NetworkManager firewalld samba-client
+
+	yum --downloadonly --downloaddir=./base install  wget git net-tools bind-utils  iptables-services bridge-utils  kexec-tools sos psacct glusterfs-fuse httpd-tools telnet curl lrzsz perf strace vim iotop  createrepo tcpdump iftop nginx nc sysstat haproxy chrony kernel-devel dnsmasq skopeo bind cockpit-bridge cockpit-docker cockpit-system cockpit-ws iscsi-initiator-utils nfs-utils ntp pyparted python-httplib2 socat conntrack-tools cifs-utils device-mapper-multipath atomic docker-novolume-plugin etcd NetworkManager firewalld samba-client
+	
 	yum --enablerepo=epel --downloadonly --downloaddir=./base install jq ansible
 	# 下载 metrics 相关 rpms
-	rm -rf metrics_depend
-	yum --downloadonly --downloaddir=./metrics_depend install python-passlib java-1.8.0-openjdk-headless patch
+	#rm -rf metrics_depend
+	#yum --downloadonly --downloaddir=./metrics_depend install python-passlib java-1.8.0-openjdk-headless patch
 	# 下载系统 update rpms
 	rm -rf update
 	yum --downloadonly --downloaddir=./update -y update
@@ -30,9 +37,29 @@ cuda(){
 
 docker(){
 	rm -rf docker
-	yum --downloadonly --downloaddir=./docker install -y docker
+	#新增docker仓库 yum-config-manager命令需要先安装yum-utils
+	yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+	yum --downloadonly --downloaddir=./docker install -y containerd.io-1.2.13
+	yum --downloadonly --downloaddir=./docker install -y docker-ce-19.03.11
+	yum --downloadonly --downloaddir=./docker install -y docker-ce-cli-19.03.11
 }
-
+kube(){
+	rm -rf kube
+	yum --downloadonly --downloaddir=./kube install -y kubelet
+	yum --downloadonly --downloaddir=./kube install -y kubeadm
+	yum --downloadonly --downloaddir=./kube install -y kubectl
+}
+bash_completion(){
+	rm -rf bash_completion
+	yum --downloadonly --downloaddir=./bash_completion install  -y bash-completion
+}
+flannel(){
+	rm -rf flannel
+	mkdir -p flannel
+	cd flannel
+	wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+	cd ../
+}
 nvidia_container_runtime(){
 	rm -rf nvidia-container-runtime
 	distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
@@ -116,22 +143,26 @@ replease_rpms(){
 	mkdir -p packages/centos/base/x86_64/RPMS/
 	mv base/*.rpm packages/centos/base/x86_64/RPMS/
 	mv docker/*.rpm packages/centos/base/x86_64/RPMS/
-	mv metrics_depend/*.rpm packages/centos/base/x86_64/RPMS/
+	#mv metrics_depend/*.rpm packages/centos/base/x86_64/RPMS/
 	mv update/*.rpm packages/centos/base/x86_64/RPMS/
-	rm -rf base docker metrics_depend update
+	mv kube/*.rpm  packages/centos/base/x86_64/RPMS/
+	mv bash_completion/*.rpm packages/centos/base/x86_64/RPMS/
+	rm -rf base docker update kube bash_completion
 	
 	# openshift-origin
-	rm -rf packages/centos/openshift-origin311
-	mv openshift-origin311 centos/
+	#rm -rf packages/centos/openshift-origin311
+	#mv openshift-origin311 centos/
 }
 
 main(){
 	base
-	rhsm
+	#rhsm
 	docker
-	ceph
+	#ceph
 	#ansible
-	openshift_origin $2
+	#openshift_origin $2
+	kube
+	bash_completion	
 	replease_rpms
 }
 

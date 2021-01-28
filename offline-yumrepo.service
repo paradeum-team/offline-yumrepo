@@ -5,8 +5,8 @@ Wants=systemd-networkd-wait-online.service
 
 [Service]
 Type=forking
-ExecStart=/data/offline-openshift-origin/offline-yumrepo/run.sh
-ExecStop=/data/offline-openshift-origin/offline-yumrepo/stop.sh
+ExecStart=/home/banana/offline-yumrepo/run.sh
+ExecStop=//home/banana/offline-yumrepo/stop.sh
 Restart=always
 RestartSec=10s
 
