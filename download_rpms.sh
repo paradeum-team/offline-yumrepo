@@ -9,11 +9,11 @@ base(){
 	yum --downloadonly --downloaddir=./base install epel-release
 	yum install -y base/epel-release*
 	sed -i -e "s/^enabled=1/enabled=0/g" /etc/yum.repos.d/epel.repo
+	rm -rf base
 
 	yum remove -y yum-utils* device-mapper-persistent-data* lvm2*
 	yum --downloadonly --downloaddir=./base install yum-utils device-mapper-persistent-data lvm2
 	yum install -y base/yum-utils* base/device-mapper-persistent-data* base/lvm2*
-	rm -rf base
 
 	yum --downloadonly --downloaddir=./base install  wget git net-tools bind-utils  iptables-services bridge-utils  kexec-tools sos psacct glusterfs-fuse httpd-tools telnet curl lrzsz perf strace vim iotop  createrepo tcpdump iftop nginx nc sysstat haproxy chrony kernel-devel dnsmasq skopeo bind cockpit-bridge cockpit-docker cockpit-system cockpit-ws iscsi-initiator-utils nfs-utils ntp pyparted python-httplib2 socat conntrack-tools cifs-utils device-mapper-multipath atomic docker-novolume-plugin etcd NetworkManager firewalld samba-client
 	
@@ -147,7 +147,8 @@ replease_rpms(){
 	mv update/*.rpm packages/centos/base/x86_64/RPMS/
 	mv kube/*.rpm  packages/centos/base/x86_64/RPMS/
 	mv bash_completion/*.rpm packages/centos/base/x86_64/RPMS/
-	rm -rf base docker update kube bash_completion
+	mv rhsm/*.rpm packages/centos/base/x86_64/RPMS/
+	rm -rf base docker update kube bash_completion rhsm
 	
 	# openshift-origin
 	#rm -rf packages/centos/openshift-origin311
@@ -156,7 +157,7 @@ replease_rpms(){
 
 main(){
 	base
-	#rhsm
+	rhsm
 	docker
 	#ceph
 	#ansible
