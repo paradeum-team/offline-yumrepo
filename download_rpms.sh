@@ -147,8 +147,8 @@ replease_rpms(){
 	mv update/*.rpm packages/centos/base/x86_64/RPMS/
 	mv kube/*.rpm  packages/centos/base/x86_64/RPMS/
 	mv bash_completion/*.rpm packages/centos/base/x86_64/RPMS/
-	mv rhsm/*.rpm packages/centos/base/x86_64/RPMS/
-	rm -rf base docker update kube bash_completion rhsm
+	#mv rhsm/*.rpm packages/centos/base/x86_64/RPMS/
+	rm -rf base docker update kube bash_completion
 	
 	# openshift-origin
 	#rm -rf packages/centos/openshift-origin311
@@ -157,7 +157,7 @@ replease_rpms(){
 
 main(){
 	base
-	rhsm
+	#rhsm
 	docker
 	#ceph
 	#ansible
