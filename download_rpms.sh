@@ -71,8 +71,11 @@ nvidia_container_runtime(){
 
 ansible(){
 	rm -rf ansible
-	yum --enablerepo=epel --downloadonly --downloaddir=./ansible install https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.6.6-1.el7.ans.noarch.rpm ansible pyOpenSSL python2-crypto
-	curl https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.6.6-1.el7.ans.noarch.rpm -o ansible/ansible-2.6.6-1.el7.ans.noarch.rpm
+	#yum --enablerepo=epel --downloadonly --downloaddir=./ansible install https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.6.6-1.el7.ans.noarch.rpm ansible pyOpenSSL python2-crypto
+	#curl https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.6.6-1.el7.ans.noarch.rpm -o ansible/ansible-2.6.6-1.el7.ans.noarch.rpm
+	yum --enablerepo=epel --downloadonly --downloaddir=./ansible install https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.9.9-1.el7.ans.noarch.rpm ansible pyOpenSSL python2-crypto
+        curl https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.6.6-1.el7.ans.noarch.rpm -o ansible/ansible-2.9.9-1.el7.ans.noarch.rpm
+	yum  --downloadonly --downloaddir=./ansible install sshpass
 }
 
 ceph(){
@@ -147,8 +150,9 @@ replease_rpms(){
 	mv update/*.rpm packages/centos/base/x86_64/RPMS/
 	mv kube/*.rpm  packages/centos/base/x86_64/RPMS/
 	mv bash_completion/*.rpm packages/centos/base/x86_64/RPMS/
+	mv ansible/*.rpm packages/centos/base/x86_64/RPMS/
 	#mv rhsm/*.rpm packages/centos/base/x86_64/RPMS/
-	rm -rf base docker update kube bash_completion
+	rm -rf base docker update kube bash_completion ansible
 	
 	# openshift-origin
 	#rm -rf packages/centos/openshift-origin311
@@ -157,11 +161,8 @@ replease_rpms(){
 
 main(){
 	base
-	#rhsm
 	docker
-	#ceph
-	#ansible
-	#openshift_origin $2
+	ansible
 	kube
 	bash_completion	
 	replease_rpms
