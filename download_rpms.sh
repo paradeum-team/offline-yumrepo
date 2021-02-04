@@ -53,12 +53,29 @@ bash_completion(){
 	rm -rf bash_completion
 	yum --downloadonly --downloaddir=./bash_completion install  -y bash-completion
 }
-flannel(){
-	rm -rf flannel
-	mkdir -p flannel
-	cd flannel
-	wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-	cd ../
+kube_flannel(){
+	FILE_DIR="../offline-k8s-otherfile/flannel"
+	rm -rf $FILE_DIR
+	mkdir -p $FILE_DIR
+	curl -s https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml -o $FILE_DIR/kube-flannel.yml
+}
+helm(){
+	FILE_DIR="../offline-k8s-otherfile/helm"
+        rm -rf $FILE_DIR
+        mkdir -p $FILE_DIR
+	curl -s https://get.helm.sh/helm-v3.5.0-linux-amd64.tar.gz -o  $FILE_DIR/helm-v3.5.0-linux-amd64.tar.gz
+}
+recommended(){
+	FILE_DIR="../offline-k8s-otherfile/helm"
+        rm -rf $FILE_DIR
+        mkdir -p $FILE_DIR
+	curl -s https://raw.githubusercontent.com/kubernetes/dashboard/v2.1.0/aio/deploy/recommended.yaml $FILE_DIR/recommended.yaml
+}
+local_path_storage(){
+	FILE_DIR="../offline-k8s-otherfile/helm"
+        rm -rf $FILE_DIR
+        mkdir -p $FILE_DIR
+	curl -s https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml $FILE_DIR/local-path-storage.yaml
 }
 nvidia_container_runtime(){
 	rm -rf nvidia-container-runtime
@@ -146,12 +163,10 @@ replease_rpms(){
 	mkdir -p packages/centos/base/x86_64/RPMS/
 	mv base/*.rpm packages/centos/base/x86_64/RPMS/
 	mv docker/*.rpm packages/centos/base/x86_64/RPMS/
-	#mv metrics_depend/*.rpm packages/centos/base/x86_64/RPMS/
 	mv update/*.rpm packages/centos/base/x86_64/RPMS/
 	mv kube/*.rpm  packages/centos/base/x86_64/RPMS/
 	mv bash_completion/*.rpm packages/centos/base/x86_64/RPMS/
 	mv ansible/*.rpm packages/centos/base/x86_64/RPMS/
-	#mv rhsm/*.rpm packages/centos/base/x86_64/RPMS/
 	rm -rf base docker update kube bash_completion ansible
 	
 	# openshift-origin
@@ -166,6 +181,10 @@ main(){
 	kube
 	bash_completion	
 	replease_rpms
+	kube_flannel
+	helm
+	recommended
+	local_path_storage
 }
 
 main $@
