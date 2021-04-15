@@ -1,0 +1,14 @@
+[Unit]
+Description=Offline Yumrepo Service
+After=systemd-networkd-wait-online.service
+Wants=systemd-networkd-wait-online.service
+
+[Service]
+Type=forking
+ExecStart=--script_path--/run.sh
+ExecStop=--script_path--/stop.sh
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target

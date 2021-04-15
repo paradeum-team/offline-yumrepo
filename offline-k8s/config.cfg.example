@@ -1,0 +1,4 @@
+# config server
+export LOCAL_IP=--local_ip--
+CONFIGSERVER_IP="--local_ip--"    ## Need to check
+CONFIGSERVER_PORT="--repo_port--"                ## Need to check

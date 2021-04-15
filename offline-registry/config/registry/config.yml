@@ -1,0 +1,13 @@
+version: 0.1
+log:
+  level: info 
+storage:
+  filesystem:
+    rootdirectory: /var/lib/registry
+    maxthreads: 100
+http:
+    addr: 172.26.117.85:5000
+    secret: placeholder
+    tls:
+      certificate: /etc/registry/ssl/offlineregistry.offline-k8s.com.crt
+      key: /etc/registry/ssl/offlineregistry.offline-k8s.com.key
