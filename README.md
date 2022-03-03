@@ -1,4 +1,7 @@
 # offline-k8s-install-package
+
+注：在打包之前需要确认是否需要更新repo信息（路径：offline-yumrepo/download_rpms.sh）以及k8s镜像列表信息（路径：offline-k8s-imagelist/k8s.images.properties）
+
 centos7.9 线下安装k8s安装包的自动打包    
 
 
