@@ -21,6 +21,14 @@ cat > /etc/yum.repos.d/offline-k8s.$ITEM.repo << EOF
 name=Offline K8s CentOS Repo
 baseurl=http://$ADDR/packages/centos/$ITEM/x86_64
 gpgcheck=0
+
+#[offline-k8s${ITEM}_modules]
+#name=offline-k8s${ITEM} modules
+#baseurl=http://$ADDR/packages/centos/$ITEM/x86_64
+#enabled=1
+#gpgcheck=0
+#module_hotfixed=1
+
 EOF
 
 

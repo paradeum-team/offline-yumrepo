@@ -9,6 +9,7 @@ cp offline-yumrepo.service.templ offline-yumrepo.service && \
 sed -i 's!--script_path--!'$base_dir'!g' offline-yumrepo.service
 
 cp offline-yumrepo.service /usr/lib/systemd/system/
+setenforce 0 || echo
 systemctl enable offline-yumrepo
 systemctl start offline-yumrepo
-
+systemctl status offline-yumrepo

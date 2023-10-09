@@ -22,7 +22,7 @@ CONFIGSERVER_PORT=${CONFIGSERVER_PORT:-8001}
 # 当同步脚本时以下命令根据config.cfg文件进行替换
 IS_SYSTEM_UPGRATE=false
 SWAP_SWITCH=false
-SELINUX_SWITCH=true
+SELINUX_SWITCH=false
 CHRONYD_INSTALL=yes
 OUTLINE_DNS=false
 K8S_IMAGE_VERSION=v1.20.2
@@ -75,6 +75,15 @@ disable_firewalld(){
 enable_selinux(){
 	echo "------------------- enable selinux -------------------"
 	sed -i 's/^SELINUX=.*/SELINUX=enforcing/g' /etc/selinux/config
+}
+
+disable_selinux(){
+        echo "------------------- disable selinux -------------------"
+        selinuxStatus=`getenforce`
+	if [ "Enforcing" == "$selinuxStatus" ];then
+	   setenforce 0
+	   sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
+	fi
 }
 
 optimize_ulimit(){
@@ -207,8 +216,10 @@ install_setup(){
 	install_base_tools
 	optimize_journald
 	disable_firewalld
-	if [ "x$SELINUX_SWITCH" != "xfalse" ]; then
-		enable_selinux	
+	if [ "x$SELINUX_SWITCH" = "xtrue" ]; then
+		enable_selinux
+        else
+                disable_selinux
 	fi
 	optimize_ulimit
 	optimize_sysctl

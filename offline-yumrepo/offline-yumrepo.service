@@ -5,8 +5,8 @@ Wants=NetworkManager.service
 
 [Service]
 Type=forking
-ExecStart=--script_path--/run.sh
-ExecStop=--script_path--/stop.sh
+ExecStart=/data/offline-yumrepo/run.sh
+ExecStop=/data/offline-yumrepo/stop.sh
 Restart=always
 RestartSec=10s
 

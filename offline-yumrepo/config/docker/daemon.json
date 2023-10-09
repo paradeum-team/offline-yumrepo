@@ -1,0 +1,11 @@
+{
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "1024m",
+    "max-file": "30"
+  },
+  "live-restore": true ,
+  "data-root": "/var/lib/docker",
+  "registry-mirrors": ["https://offlineregistry.offline-k8s.com:5000"],
+  "insecure-registries" : ["https://offlineregistry.offline-k8s.com:5000"]
+}
