@@ -1,2 +1,4 @@
 #!/bin/bash
-systemctl start offline-registry
+
+./pre.sh
+docker compose up -d

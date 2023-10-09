@@ -1,2 +1,2 @@
 #!/bin/bash
-systemctl stop offline-registry
+docker compose stop
